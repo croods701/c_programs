@@ -32,14 +32,12 @@ void pause()
 
 void draw_seprator(char sep, int len)
 {
-    for(int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
     {
         putchar(sep);
     }
     printf("\n");
 }
-
-
 
 #define MAX_LEN 50
 int QUEUE[MAX_LEN];
@@ -185,9 +183,9 @@ int print_2d_array(int m, int n, int **arr)
 
 void print_welcome_message()
 {
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
     printf("\t Welcome to Graph program \n");
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
 }
 
 void graph_prgm()
@@ -198,9 +196,9 @@ void graph_prgm()
     printf("Graph created sucessfully AND Adjacency Matix is created. \n");
     print_2d_array(vert, vert, _graph.adjmatrix);
     //Vertices Connect
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
     printf("\t Connect Vertices \n");
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
 
     printf("[Enter -1 and -1 to finish]\n");
     int flag = 1;
@@ -218,34 +216,23 @@ void graph_prgm()
     printf("New Adjancey Matrix :- \n");
     print_2d_array(vert, vert, _graph.adjmatrix);
     //Travesal
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
     printf("\t Traversal \n");
-    draw_seprator('-',40);
+    draw_seprator('-', 40);
+    printf("[Enter -1 to Exit]\n");
     int flag2 = 1;
     while (flag2)
     {
-        int v = ask_choice("Enter the vertice:", 0, 99);
-        printf("1. BFT \n");
-        printf("2. DFT \n");
-        printf("3. Exit \n");
-        int ch2 = ask_choice("Choice : ", 1, 3);
-        switch (ch2)
-        {
-        case 1:
-            BFS_graph(&_graph, v, &print_graph_node);
-            NL;
+        int v = ask_choice("Enter the vertice:", -1, _graph.V - 1);
+        if (v == -1)
             break;
-        case 2:
-            DFS_graph(&_graph, v, &print_graph_node);
-            NL;
-            break;
-        case 3:
-            flag2 = 0;
-            break;
+        printf("BFS - ");
+        BFS_graph(&_graph, v, &print_graph_node);
+        NL;
 
-        default:
-            break;
-        }
+        printf("DFS - ");
+        DFS_graph(&_graph, v, &print_graph_node);
+        NL;
         NL;
     }
 }
