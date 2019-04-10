@@ -2,21 +2,22 @@
 #include <stdlib.h>
 
 #define MAX_LEN 50
-
-void pause(void)
-{
-    fflush(stdout);
-    getchar();
-    getchar();
-}
+#define NL printf("\n")
 
 void clear()
 {
     system("cls");
 }
 
-//orient = 0 : Horizontal
-//orient = 1; Vertical
+void draw_seprator(char sep, int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        putchar(sep);
+    }
+    printf("\n");
+}
+
 int print_2d_array(int m, int n, int arr[m][n], int upto_row)
 {
     if (m <= 0 || upto_row <= 0 || n <= 0)
@@ -26,7 +27,6 @@ int print_2d_array(int m, int n, int arr[m][n], int upto_row)
 
     for (int i = 0; i < upto_row; i++)
     {
-
         for (int j = 0; j < n; j++)
             printf("%d ", arr[i][j]);
         printf("\n");
@@ -56,13 +56,13 @@ int _input_2d_array(int m, int n, int arr[m][n], int upto_row, int upto_col)
 {
     if (m <= 0 || upto_row <= 0 || n <= 0)
         return 1;
-        
+
     if (upto_row > m || upto_col > n)
         return 2;
 
     printf("Enter the matrix row by row, values in col should be seprated by SINGLE space. \n");
     for (int i = 0; i < upto_col; i++)
-        printf("*   ");
+        printf("* ");
     printf("\n");
 
     fflush(stdin);
@@ -80,9 +80,9 @@ int _input_2d_array(int m, int n, int arr[m][n], int upto_row, int upto_col)
 
 void welcome()
 {
+    draw_seprator('-', 40);
     printf("\t Sparse Array To Triplet \n");
-    printf("--------------------------------------- \n");
-
+    draw_seprator('-', 40);
     printf("\t 1. Input Sparse Array \n");
     printf("\t 2. View Triplet \n");
     printf("\t 3. Exit \n");
@@ -90,39 +90,33 @@ void welcome()
 
 void input_2d_array(int m, int n, int arr[m][n], int *upto_row, int *upto_col)
 {
-    clear();
+    NL;
+    draw_seprator('-', 40);
     printf("\t Array Input \n");
-    printf("--------------------------------------- \n");
+    draw_seprator('-', 40);
 
     printf("Enter the no. of rows and col: ");
     scanf("%d %d", upto_row, upto_col);
     printf("\n");
 
-    int res = _input_2d_array(m, n, arr, *upto_col, *upto_col);
+    int res = _input_2d_array(m, n, arr, *upto_row, *upto_col);
     if (res == 1)
-    {
         printf("[ERROR] Please enter positive indexes \n");
-    }
     else if (res == 2)
-    {
         printf("[ERROR] Please values less than 50.\n");
-    }
     else if (res == 0)
-    {
         printf("Matrix Entered. \n");
-    }
-
-    pause();
-    clear();
+    NL;
 }
 
 void print_triplet(int m, int n, int arr[m][n], int upto_row, int upto_col, int outarr[][3])
 {
-    clear();
+    NL;
     if (!(upto_col == 0 && upto_row == 0))
     {
-        printf("\tTriplet  \n");
-        printf("--------------------------------------- \n");
+        draw_seprator('-', 40);
+        printf("\t Triplet  \n");
+        draw_seprator('-', 40);
 
         int filled = get_triplet(m, n, arr, upto_row, upto_col, outarr);
 
@@ -132,17 +126,11 @@ void print_triplet(int m, int n, int arr[m][n], int upto_row, int upto_col, int 
             print_2d_array(m, 3, outarr, upto_row_t);
         }
         else
-        {
             printf("[ERROR] Input array is not Sparse. \n");
-        }
     }
     else
-    {
         printf("{ERROR]Array is EMPTY, Please input matrix first. \n");
-    }
-
-    pause();
-    clear();
+    NL;
 }
 
 int main()
@@ -179,6 +167,4 @@ int main()
             break;
         }
     }
-
-    pause();
 }
