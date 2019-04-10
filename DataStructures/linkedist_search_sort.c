@@ -141,6 +141,19 @@ linkedlist *selection_sort_linkedlist(linkedlist *list)
     return list;
 }
 
+void input_linkedlist(linkedlist *list)
+{
+    int n = ask_choice(1, 99999, "Enter total nodes");
+    printf("Enter the values seprated by space :");
+    for (int i = 1; i <= n; i++)
+    {
+        int val;
+        scanf("%d",&val);
+        add_node(list,i,val);
+    }
+    fflush(stdin);
+    fflush(stdin);
+}
 
 void welcome()
 {
@@ -157,7 +170,7 @@ void linkedlist_operations_welcome(linkedlist *list)
     display_linkedlist(list);
     printf("\n");
 
-    printf("1. Add Node \n");
+    printf("1. Input List \n");
     printf("2. Search (Linear) \n");
     printf("3. Sort (Selection) \n");
     printf("4. Exit \n");
@@ -175,18 +188,7 @@ void linkedlist_operations()
         switch (ch)
         {
         case 1:
-            printf("Enter the index : ");
-            int index, val;
-            scanf("%d", &index);
-
-            printf("Enter the value you wish to add in list : ");
-            scanf("%d", &val);
-
-            int status = add_node(list, index, val);
-            if (status == -1)
-                printf("[ERROR] OverFlow. \n");
-            else if (status == -2)
-                printf("[ERROR] UnderFlow. \n");
+            input_linkedlist(list);
             break;
 
         case 2:
