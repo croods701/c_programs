@@ -3,21 +3,10 @@
 
 #define MAX_LEN 5
 
-void pause(void)
-{
-    fflush(stdout);
-    getchar();
-    getchar();
-}
 
-void clear()
-{
-    system("cls");
-}
 
 void print_stack(int top, int arr[])
 {
-    clear();
     printf("\tCurrent Stack \n");
 
     if (top >= 0)
@@ -31,8 +20,6 @@ void print_stack(int top, int arr[])
         printf("[ERROR] Array is Empty. \n");
     }
 
-    pause();
-    clear();
 }
 
 int _push(int n, int arr[], int *pos, int val)
@@ -61,10 +48,6 @@ int _pop(int n, int arr[], int *pos, int *val_pop)
 
 void push(int n, int arr[], int *pos)
 {
-    clear();
-    printf("\t Push \n");
-    printf("--------------------------- \n");
-
     printf("Enter Val : ");
     int v;
     scanf("%d", &v);
@@ -78,15 +61,12 @@ void push(int n, int arr[], int *pos)
         printf("Overflow Occurs. \n");
     }
 
-    pause();
-    clear();
+    
 }
 
 void pop(int n, int arr[], int *pos)
 {
-    clear();
-    printf("\t Pop \n");
-    printf("------------------------------ \n");
+
 
     int v;
     int res = _pop(n, arr, pos, &v);
@@ -99,12 +79,12 @@ void pop(int n, int arr[], int *pos)
         printf("Underflow Occurs. \n");
     }
 
-    pause();
-    clear();
+  
 }
 
 void welcome()
 {
+    printf("-------------------------------\n");
     printf("\t Stack Program \n");
     printf("-------------------------------\n");
 
@@ -116,7 +96,6 @@ void welcome()
 
 int main()
 {
-    clear();
 
     int array[MAX_LEN] = {0};
     int top = -1;
@@ -125,7 +104,6 @@ int main()
 
     while (flag == 0)
     {
-        clear();
         welcome();
         int ch;
         printf("Please Choose option : ");
@@ -152,5 +130,4 @@ int main()
         }
     }
 
-    pause();
 }
