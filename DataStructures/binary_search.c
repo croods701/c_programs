@@ -50,15 +50,17 @@ int main()
     printf("\t Welcome to Binary Search \n");
     int n = ask_choice(1, 50, "Enter the lenght of array");
     input_array(arr, n);
-        printf("Array: ");
-        print_array(arr, n);
-        printf("\n");
+    printf("Array: ");
+    print_array(arr, n);
+    printf("\n");
 
     int flag = 1;
     while (flag)
     {
-        int val = ask_choice(-9999, 99999, "Enter the value to search:");
+        int val = ask_choice(-9999, 99999, "Enter the value to search[Input -1 to exit]:");
         int pos = binary_search(arr, 0, n - 1, val);
+        if (val == -1)
+            break;
         if (pos == -1)
             printf("Not Found \n");
         else

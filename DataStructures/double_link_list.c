@@ -30,6 +30,7 @@ void draw_seprator(char sep, int len)
 typedef struct node
 {
     struct node *next;
+    struct node *prev;
     int data;
 } node;
 
@@ -47,11 +48,12 @@ linkedlist *new_linear_list()
     return list;
 }
 
-node *create_node(int val, node *next)
+node *create_node(int val, node *next, node *prev)
 {
     node *my_node = New_Mem(node);
     my_node->data = val;
     my_node->next = next;
+    my_node->prev = prev;
     return my_node;
 }
 
@@ -79,19 +81,22 @@ int add_node(linkedlist *list, int pos, int val)
 
     if (temp_head == NULL)
     {
-        list->head = create_node(val, NULL);
+        list->head = create_node(val, NULL, NULL);
         (list->size)++;
         return 0;
     }
     if (pos == 1)
     {
         node *prev_node = get_node_by_pos(list, pos);
-        list->head = create_node(val, prev_node);
+        list->head = create_node(val, prev_node, NULL);
+        prev_node->prev = list->head;
     }
     else
     {
         node *prev_node = get_node_by_pos(list, pos - 1);
-        node *new_node = create_node(val, prev_node->next);
+        node *new_node = create_node(val, prev_node->next, prev_node);
+        if(prev_node->next != NULL)
+            prev_node->next->prev = new_node;
         prev_node->next = new_node;
     }
 
@@ -119,6 +124,7 @@ int del_node(linkedlist *list, int pos)
     {
         node *pos_node = get_node_by_pos(list, pos);
         list->head = pos_node->next;
+        list->head->prev = NULL;
         free(pos_node);
     }
     else
@@ -126,6 +132,8 @@ int del_node(linkedlist *list, int pos)
         node *prev_node = get_node_by_pos(list, pos - 1);
         node *pos_node = get_node_by_pos(list, pos);
         prev_node->next = pos_node->next;
+        if(pos_node->next != NULL)
+            pos_node->next->prev = prev_node;
         free(pos_node);
     }
 
@@ -140,7 +148,7 @@ void display_linkedlist(linkedlist *list)
         return;
     while (temp->next != NULL)
     {
-        printf("|%d|%p|--->", temp->data, temp);
+        printf("|%d|%p|<--->", temp->data, temp);
         temp = temp->next;
     }
     printf("|%d|%p|", temp->data, temp);
@@ -149,7 +157,7 @@ void display_linkedlist(linkedlist *list)
 void welcome(linkedlist *list)
 {
     draw_seprator(SEP, 40);
-    printf("\t Welcome to LinkedList Program \n");
+    printf("\t Welcome to Double LinkedList Program \n");
     draw_seprator(SEP, 40);
 
     printf("List : ");
@@ -160,7 +168,7 @@ void welcome(linkedlist *list)
     printf(" 1. Beginning\t2. End\t3. Specific Position\n");
     printf("Del Node - \n");
     printf(" 4. Beginning\t5. End\t6. Specific Position\n");
-    
+
     printf("7. Exit \n");
 }
 

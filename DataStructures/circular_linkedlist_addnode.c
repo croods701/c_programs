@@ -21,9 +21,8 @@ int ask_choice(int m, int n, char *ques)
 void draw_seprator(char sep, int len)
 {
     for (int i = 0; i < len; i++)
-    {
         putchar(sep);
-    }
+    
     printf("\n");
 }
 
@@ -79,14 +78,17 @@ int add_node(linkedlist *list, int pos, int val)
 
     if (temp_head == NULL)
     {
-        list->head = create_node(val, NULL);
+        list->head = create_node(val, list->head);
+        list->head->next = list->head;
         (list->size)++;
         return 0;
     }
     if (pos == 1)
     {
         node *prev_node = get_node_by_pos(list, pos);
+        node *last_node = get_node_by_pos(list, list->size);
         list->head = create_node(val, prev_node);
+        last_node->next = list->head;
     }
     else
     {
@@ -108,7 +110,7 @@ int del_node(linkedlist *list, int pos)
     if (pos <= 0)
         return -2;
 
-    if (temp_head->next == NULL)
+    if (temp_head->next == temp_head)
     {
         free(temp_head);
         list->head = NULL;
@@ -118,7 +120,9 @@ int del_node(linkedlist *list, int pos)
     if (pos == 1)
     {
         node *pos_node = get_node_by_pos(list, pos);
+        node *last_node = get_node_by_pos(list, list->size);
         list->head = pos_node->next;
+        last_node->next = list->head;
         free(pos_node);
     }
     else
@@ -133,12 +137,14 @@ int del_node(linkedlist *list, int pos)
     return 0;
 }
 
+
+
 void display_linkedlist(linkedlist *list)
 {
     node *temp = list->head;
     if (!temp)
         return;
-    while (temp->next != NULL)
+    while (temp->next != list->head)
     {
         printf("|%d|%p|--->", temp->data, temp);
         temp = temp->next;
@@ -149,7 +155,7 @@ void display_linkedlist(linkedlist *list)
 void welcome(linkedlist *list)
 {
     draw_seprator(SEP, 40);
-    printf("\t Welcome to LinkedList Program \n");
+    printf("\t Welcome to Circular LinkedList Program \n");
     draw_seprator(SEP, 40);
 
     printf("List : ");
@@ -190,6 +196,7 @@ void linkedlist_add_operations()
             else if (status == -2)
                 printf("[ERROR] UnderFlow. \n");
             break;
+
         case 4:
             del_node(list, 1);
             break;

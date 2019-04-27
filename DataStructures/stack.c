@@ -96,7 +96,7 @@ void welcome()
 
 int main()
 {
-
+    system("clear||cls");
     int array[MAX_LEN] = {0};
     int top = -1;
 

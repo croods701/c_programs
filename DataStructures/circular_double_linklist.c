@@ -30,6 +30,7 @@ void draw_seprator(char sep, int len)
 typedef struct node
 {
     struct node *next;
+    struct node *prev;
     int data;
 } node;
 
@@ -47,14 +48,14 @@ linkedlist *new_linear_list()
     return list;
 }
 
-node *create_node(int val, node *next)
+node *create_node(int val, node *next, node *prev)
 {
     node *my_node = New_Mem(node);
     my_node->data = val;
     my_node->next = next;
+    my_node->prev = prev;
     return my_node;
 }
-
 //Starts 1,2,3....,size.
 node *get_node_by_pos(linkedlist *list, int pos)
 {
@@ -79,19 +80,24 @@ int add_node(linkedlist *list, int pos, int val)
 
     if (temp_head == NULL)
     {
-        list->head = create_node(val, NULL);
+        list->head = create_node(val, list->head, list->head);
+        list->head->next = list->head;
         (list->size)++;
         return 0;
     }
     if (pos == 1)
     {
         node *prev_node = get_node_by_pos(list, pos);
-        list->head = create_node(val, prev_node);
+        node *last_node = get_node_by_pos(list, list->size);
+        list->head = create_node(val, prev_node,last_node);
+        last_node->next = list->head;
     }
     else
     {
         node *prev_node = get_node_by_pos(list, pos - 1);
-        node *new_node = create_node(val, prev_node->next);
+        node *new_node = create_node(val, prev_node->next, prev_node);
+        if(prev_node->next != NULL)
+            prev_node->next->prev = new_node;
         prev_node->next = new_node;
     }
 
@@ -108,7 +114,7 @@ int del_node(linkedlist *list, int pos)
     if (pos <= 0)
         return -2;
 
-    if (temp_head->next == NULL)
+    if (temp_head->next == temp_head)
     {
         free(temp_head);
         list->head = NULL;
@@ -118,7 +124,9 @@ int del_node(linkedlist *list, int pos)
     if (pos == 1)
     {
         node *pos_node = get_node_by_pos(list, pos);
+        node *last_node = get_node_by_pos(list, list->size);
         list->head = pos_node->next;
+        last_node->next = list->head;
         free(pos_node);
     }
     else
@@ -126,6 +134,8 @@ int del_node(linkedlist *list, int pos)
         node *prev_node = get_node_by_pos(list, pos - 1);
         node *pos_node = get_node_by_pos(list, pos);
         prev_node->next = pos_node->next;
+        if(pos_node->next != NULL)
+            pos_node->next->prev = prev_node;
         free(pos_node);
     }
 
@@ -133,14 +143,15 @@ int del_node(linkedlist *list, int pos)
     return 0;
 }
 
+
 void display_linkedlist(linkedlist *list)
 {
     node *temp = list->head;
     if (!temp)
         return;
-    while (temp->next != NULL)
+    while (temp->next != list->head)
     {
-        printf("|%d|%p|--->", temp->data, temp);
+        printf("|%d|%p|<--->", temp->data, temp);
         temp = temp->next;
     }
     printf("|%d|%p|", temp->data, temp);
@@ -149,7 +160,7 @@ void display_linkedlist(linkedlist *list)
 void welcome(linkedlist *list)
 {
     draw_seprator(SEP, 40);
-    printf("\t Welcome to LinkedList Program \n");
+    printf("\t Welcome to Circular Double LinkedList Program \n");
     draw_seprator(SEP, 40);
 
     printf("List : ");
@@ -190,6 +201,7 @@ void linkedlist_add_operations()
             else if (status == -2)
                 printf("[ERROR] UnderFlow. \n");
             break;
+
         case 4:
             del_node(list, 1);
             break;
